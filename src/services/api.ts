@@ -1,4 +1,4 @@
-interface FormData {
+export interface FormData {
         name: string;
         born: string;
         cpf: string;
@@ -10,14 +10,25 @@ interface FormData {
 
 class Api{
 
-    get(){
+    get(filter: string){
 
-        const clients = window.localStorage.getItem('client');
+        const clients = localStorage.getItem('client');
 
         if(clients){
-            const clientsParsed = JSON.parse(clients);
+            var regexFilter = new RegExp(filter, "i");
+            const clientsParsed: FormData[] = JSON.parse(clients);
+            return clientsParsed.filter((client: FormData)=> regexFilter.test(client.name)) //just returns the clients whose match on the filter
         }
 
+        return null
+
+    }
+
+    getTotal(){ // return total of clients
+        const clients = localStorage.getItem('client');
+        const clientsTotal = clients ? JSON.parse(clients) : [];
+
+        return clientsTotal.length
     }
 
     post(route: string, content: FormData){
@@ -28,7 +39,7 @@ class Api{
 
                 const clients = localStorage.getItem(route);
 
-                clients && JSON.parse(clients).forEach((client: typeof content) => clientsArray.push(client)); // if have clients, add all clients to array
+                clients && JSON.parse(clients).forEach((client: FormData) => clientsArray.push(client)); // if have clients, add all clients to array
                 
                 if(clientsArray.find(element => element.cpf === content.cpf)){ //verify if the user have already been submitted
                     throw new Error('Usuario existente');
@@ -44,6 +55,20 @@ class Api{
                 reject(err);
             }
         });
+    };
+
+    delete(cpf: string){
+        const clients = localStorage.getItem('client');
+
+        const clientsArray: FormData[] = [];
+
+        clients && JSON.parse(clients)
+            .filter((client: FormData) => client.cpf !== cpf) //remove the client
+            .forEach((client: FormData) => clientsArray.push(client)); //push all clients, but the remove
+
+        localStorage.setItem('client', JSON.stringify(clientsArray));
+
+        return clientsArray
     }
 
 }

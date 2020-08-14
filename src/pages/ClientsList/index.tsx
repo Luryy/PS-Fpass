@@ -1,98 +1,73 @@
-import React, { useState, FormEvent } from 'react';
-import './styles.css'
+import React, { useState, useEffect } from 'react';
 
-// import PageHeader from '../../components/PageHeader';
-// import TeacherItem, { Teacher } from '../../components/TeacherItem';
-// import Input from '../../components/Input';
-// import Select from '../../components/Select';
-// import api from '../../services/api';
+import './styles.css';
+
+import PageHeader from '../../components/PageHeader';
+import ClientItem, { Client } from '../../components/ClientItem';
+import Input from '../../components/Input';
+import Api, { FormData } from '../../services/api';
+import Pagination from '../../components/Pagination';
 
 
-function TeacherList(){
+function ClientList(){
 
-    // const [teachers, setTeachers] = useState([]);
+    const [clientsTotal, setClientsTotal] = useState<FormData[]>([]); //all clients
 
-    // const [subject, setSubject] = useState('');
-    // const [weekDay, setWeekDay] = useState('');
-    // const [time, setTime] = useState('');
+    const [clientsPage, setClientsPage] = useState<FormData[]>([]); //clients at the page
 
-    // async function handleSubmit(e: FormEvent){
-    //     e.preventDefault();
+    const [filter, setFilter] = useState('');
 
-    //     const classes = await api.get('classes', {
-    //                         params:{
-    //                             subject,
-    //                             week_day: weekDay,
-    //                             time,
-    //                         }
-    //                     })
+    const [current, setCurrent] = useState(1); //page
 
-    //    setTeachers(classes.data);
+    const paginate = (pageNumber: number) => setCurrent(pageNumber); //to set the current page when click on pagination
 
-    //  }
+    const handleDelete = (cpf: string) => {
+        const api = new Api();
+        const restant = api.delete(cpf);
 
+        restant && setClientsTotal(restant);
+    }
+
+    useEffect(() => {
+        const api = new Api();
+        const cli = api.get(filter);
+
+        cli && setClientsTotal(cli);
+    }, [filter]);
+
+    useEffect(() => {
+        setClientsPage(clientsTotal.slice((current - 1) * 10 , current * 10)) //to get the clients of the correct page
+    }, [current, clientsTotal])
+   
     return(
-        <div id="page-teacher-list" className="container">oi
-            {/* <PageHeader title="Esses são os Proffys disponveis">
-                <form id="search-term" onSubmit={handleSubmit}>
-                    <Select 
-                        name="subject" 
-                        label="Matéria"
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                        options={[
-                            {value: "Matemática", label: "Matemática"},
-                            {value: "Química", label: "Química"},
-                            {value: "Português", label: "Português"},
-                            {value: "Biologa", label: "Biologa"},
-                            {value: "Física", label: "Física"},
-                            {value: "Geografia", label: "Geografia"},
-                            {value: "Artes", label: "Artes"},
-                            {value: "Redação", label: "Redação"},
-                            {value: "História", label: "História"}
-                        ]} 
-
-                    />
-                    <Select 
-                        name="week-day" 
-                        label="Dia da semana"
-                        value={weekDay}
-                        onChange={(e) => setWeekDay(e.target.value)}
-                        options={[
-                            {value: "0", label: "Domingo"},
-                            {value: "1", label: "Segunda-Feira"},
-                            {value: "2", label: "Terça-Feira"},
-                            {value: "3", label: "Quarta-Feira"},
-                            {value: "4", label: "Quinta-Feira"},
-                            {value: "5", label: "Sexta-Feira"},
-                            {value: "6", label: "Sábado"}
-                        ]} 
-
-                    />
+        <div id="page-client-list" className="container">
+            <PageHeader title="Lista de Clientes">
+                <form id="search-term" >
                     <Input 
-                        name="time" 
-                        label="Hora" 
-                        type="time"
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)} 
+                        name="filter" 
+                        label="Filtro" 
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)} 
                     />
-
-                    <button type="submit">
-                        Buscar
-                    </button>
-
                 </form>
             </PageHeader>
 
+            <Pagination 
+                postsPerPage={10}
+                totalPosts={clientsTotal.length}  
+                paginate={paginate}
+                current={current}
+            />
+
             <main>
-                {teachers.map((teacher: Teacher) => {
+                {clientsPage.map((client: Client) => {
                     return(
-                        <TeacherItem key={teacher.id} teacher={teacher} />
+                        <ClientItem key={client.cpf} client={client} remove={handleDelete} />
                     )})
                 }
                 
-            </main> */}
+            </main>
         </div>
     )
 }
-export default TeacherList
+export default ClientList

@@ -1,0 +1,124 @@
+.client-item{
+    background-color: var(--color-box-base);
+    border: 1px solid var(--color-line-in-white);
+    border-radius: 0.8rem;
+    margin-top: 2.4rem;
+    overflow: hidden;
+}
+
+.client-item header{
+    padding: 3.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.client-item header button{
+    width: 9rem;
+    height: 5rem;
+    border-radius: 0.8rem;
+    background-color: red;
+    color: var(--color-button-text);
+    border: 0px;
+    font: 700 1.4rem Archivo;
+}
+
+.client-item header button:hover{
+    background-color: rgb(201, 0, 0);
+}
+
+.client-item header div strong{
+    font: 700 2.4rem Archivo;
+    display: block;
+    color: var(--color-text-title);
+}
+
+.client-item header div .info{
+    margin-top: 2rem;
+}
+
+.client-item header div .info span{
+    font-size: 1.6rem;
+    display: block;
+    margin-right: 2rem;
+}
+
+.client-item > p {
+    padding: 0 2rem;
+    font-size: 1.8rem;
+    line-height: 2.8rem;
+}
+
+.client-item footer{
+    justify-content: space-between;
+    padding: 3.2rem 2rem;
+    background-color: var(--color-box-footer);
+    margin-top: 3.2rem;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--color-line-in-white);
+}
+
+.client-item footer a{
+    width: 45%;
+    height: 5.6rem;
+    color: var(--color-button-text);
+    border: 0;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    font: 700 1.4rem Archivo;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    transition: 0.2s;
+    text-decoration: none;
+}
+
+.client-item footer .mail{
+    background-color: var(--color-primary-lighter);
+}
+
+.client-item footer .mail:hover{
+    background-color: var(--color-primary-dark);
+}
+
+.client-item footer .number{
+    background-color: var(--color-secundary);
+}
+
+.client-item footer .number:hover{
+    background-color: var(--color-secundary-dark);
+}
+
+@media(min-width: 700px){
+    #page-client-list main{
+        padding: 3.2rem 0;
+        max-width: 740px;
+        margin: 0 auto;
+    }
+
+    .client-item header div .info{
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    .client-item header,
+    .client-item footer{
+        padding: 3.2rem;
+    }
+
+    .client-item > p{
+        padding: 0 3.2rem;
+    }
+
+    .client-item footer a{
+        width: 24.5rem;
+        font-size: 1.6rem;
+        justify-content: center;
+    }
+
+    .client-item footer a img{
+        margin-right: 1.6rem;
+    }
+}
