@@ -68,3 +68,12 @@ yarn start
 └── yarn.lock
 ```
 
+### :nut_and_bolt: Features
+
+-  Client Update
+-  Form RealTime Validator
+-  Input mask 
+-  Client list
+-  List Filter
+-  List Pagination
+
